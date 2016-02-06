@@ -1,0 +1,20 @@
+{
+  "name": "kpm",
+  "version": "1.0.0-alpha1",
+  "description": "Kibana Plugin Manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Court Ewing <court@epixa.com>",
+  "license": "MIT",
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/epixa/kpm.git"
+  },
+  "dependencies": {
+    "prompt": "^0.2.14",
+    "request": "^2.69.0"
+  }
+}
