@@ -2,7 +2,8 @@
 
 const fs = require('fs');
 const curry = require('lodash').curry;
-const api = require('./api');
+const put = require('./api').put;
+const cbPromiseHandler = require('./util').cbPromiseHandler;
 
 // uploads the archive at the path as the plugin version
 // must reject if user is not owner
@@ -10,7 +11,7 @@ const api = require('./api');
 // must reject if version does not exist
 function upload(path, version) {
   return new Promise((resolve, reject) => {
-    const stream = api.put(url(version.url), api.handler(resolve, reject));
+    const stream = put(url(version.url), cbPromiseHandler(resolve, reject));
     fs.createReadStream(path).pipe(stream);
   });
 }
