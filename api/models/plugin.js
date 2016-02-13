@@ -9,7 +9,7 @@ export default class Plugin extends Document {
   constructor() {
     super();
 
-    this.name = String;
+    this.name = { type: String, unique: true };
     this.versions = [];
   }
 }
@@ -30,8 +30,9 @@ export function loadPlugin(name) {
     .catch(done);
 }
 
-export function savePlugin(plugin) {
-  return done => plugin.save()
+export function savePlugin(data) {
+  const { name } = data;
+  return done => Plugin.loadOneAndUpdate({ name }, data, { upsert: true })
     .then(plugin => done(null, plugin))
     .catch(done);
 }

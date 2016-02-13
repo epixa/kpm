@@ -1,6 +1,6 @@
 'use strict';
 
-import Plugin, { loadPlugins, loadPlugin, savePlugin } from '../models/plugin';
+import { loadPlugins, loadPlugin, savePlugin } from '../models/plugin';
 
 export function *list() {
   this.body = yield loadPlugins();
@@ -17,8 +17,6 @@ export function *get(name) {
 }
 
 export function *upsert(name) {
-  const plugin = Plugin.create({ name });
-
-  this.body = yield savePlugin(plugin);
+  this.body = yield savePlugin({ name });
   this.status = 200;
 }
