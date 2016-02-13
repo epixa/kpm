@@ -1,8 +1,9 @@
 'use strict';
 
 import { EmbeddedDocument } from 'camo';
-import { notFound } from 'boom';
+import { conflict, notFound } from 'boom';
 import { find } from 'lodash';
+import { savePlugin } from './plugin';
 
 export default class Version extends EmbeddedDocument {
   constructor() {
@@ -27,4 +28,21 @@ export function loadVersion(plugin, number) {
       done(err);
     }
   };
+}
+
+export function saveVersion(plugin, data) {
+  const { number } = data;
+  return done => {
+      try {
+        let version = find(plugin.versions, { number });
+        if (version) throw conflict(`Version ${number} already exists`);
+
+        version = Version.create(data);
+        plugin.versions.push(version);
+
+        savePlugin(plugin)(done);
+      } catch (err) {
+        done(err);
+      }
+    }
 }
