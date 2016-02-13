@@ -1,7 +1,6 @@
 'use strict';
 
-import { notFound } from 'boom';
-import Plugin from '../models/plugin';
+import Plugin, { loadPlugins, loadPlugin, savePlugin } from '../models/plugin';
 
 export function *list() {
   this.body = yield loadPlugins();
@@ -22,26 +21,4 @@ export function *upsert(name) {
 
   this.body = yield savePlugin(plugin);
   this.status = 200;
-}
-
-function loadPlugins() {
-  return done => Plugin.loadMany()
-    .then(plugins => done(null, plugins))
-    .catch(done);
-}
-
-function loadPlugin(name) {
-  return done => Plugin.loadOne({ name })
-    .then(plugin => {
-      if (!plugin) throw notFound(`No plugin named ${name}`);
-      return plugin;
-    })
-    .then(plugin => done(null, plugin))
-    .catch(done);
-}
-
-function savePlugin(plugin) {
-  return done => plugin.save()
-    .then(plugin => done(null, plugin))
-    .catch(done);
 }
