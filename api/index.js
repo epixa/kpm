@@ -5,6 +5,8 @@ import logger from 'koa-logger';
 import compress from 'koa-compress';
 import { get, put } from 'koa-route';
 
+import database from './database';
+
 import * as plugins from './routes/plugins';
 import * as versions from './routes/versions';
 import * as archives from './routes/archives';
@@ -13,6 +15,10 @@ const app = koa();
 
 // Logger
 app.use(logger());
+
+
+// Database
+app.use(database('nedb://memory'));
 
 
 // Routes
