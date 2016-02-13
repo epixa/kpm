@@ -8,10 +8,11 @@ function put() {
   // todo: prepend base url
   // todo: inject authorization
   // todo: handle common errors
+  arguments[0] = `http://localhost:4000${arguments[0]}`;
   return request.put.apply(request, arguments);
 }
 
 module.exports = {
-  handler: cbPromiseHandler
+  handler: cbPromiseHandler,
   put
 };

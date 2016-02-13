@@ -14,6 +14,7 @@
     "url": "https://github.com/epixa/kpm.git"
   },
   "dependencies": {
+    "lodash": "^4.2.1",
     "prompt": "^0.2.14",
     "request": "^2.69.0"
   }

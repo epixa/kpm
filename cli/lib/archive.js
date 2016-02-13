@@ -10,9 +10,16 @@ const cbPromiseHandler = require('./util').cbPromiseHandler;
 // must reject if archive already exists
 // must reject if version does not exist
 function upload(path, version) {
+  const archiveUrl = url(version.url);
   return new Promise((resolve, reject) => {
-    const stream = put(url(version.url), cbPromiseHandler(resolve, reject));
+    const stream = put(archiveUrl, cbPromiseHandler(resolve, reject));
     fs.createReadStream(path).pipe(stream);
+  })
+  .then(response => {
+    if (response.statusCode !== 204) {
+      throw new Error(`Unexpected status: ${response.statusCode}`);
+    }
+    return { url: archiveUrl };
   });
 }
 

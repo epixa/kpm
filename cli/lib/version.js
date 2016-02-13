@@ -8,8 +8,15 @@ const api = require('./api');
 // must reject if request already exists
 // must reject if plugin does not exist
 function create(version, plugin) {
+  const versionUrl = url(version, plugin.url);
   return new Promise((resolve, reject) => {
-    api.put(url(version, plugin.url), api.handler(resolve, reject));
+    api.put(versionUrl, api.handler(resolve, reject));
+  })
+  .then(response => {
+    if (response.statusCode !== 200) {
+      throw new Error(`Unexpected status: ${response.statusCode}`);
+    }
+    return { url: versionUrl };
   });
 }
 

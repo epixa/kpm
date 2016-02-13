@@ -9,5 +9,5 @@ export function *get() {
 }
 
 export function *upsert() {
-  this.throw(404, 'Not implemented');
+  this.status = 200;
 }

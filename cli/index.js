@@ -15,14 +15,18 @@ if (!command) {
 
 switch (command) {
   case 'publish':
-    publish.apply(null, args);
+    publish.apply(null, args).catch(handleError);
     break;
   case 'publish-tar':
-    publishTar.apply(null, args);
+    publishTar.apply(null, args).catch(handleError);
     break;
   case 'add-user':
-    addUser.apply(null, args);
+    addUser.apply(null, args).catch(handleError);
     break;
   default:
     throw new Error(`Unknown command: ${command}`);
+}
+
+function handleError(err) {
+  console.error(err);
 }

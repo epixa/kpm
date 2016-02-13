@@ -9,7 +9,7 @@ import * as plugins from './routes/plugins';
 import * as versions from './routes/versions';
 import * as archives from './routes/archives';
 
-export default const app = koa();
+const app = koa();
 
 // Logger
 app.use(logger());
@@ -36,3 +36,5 @@ if (!module.parent) {
   app.listen(4000);
   console.log('listening on port 4000');
 }
+
+export default app;
