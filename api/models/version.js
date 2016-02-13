@@ -3,7 +3,7 @@
 import { EmbeddedDocument } from 'camo';
 import { conflict, notFound } from 'boom';
 import { find } from 'lodash';
-import { savePlugin } from './plugin';
+import { updatePlugin } from './plugin';
 
 export default class Version extends EmbeddedDocument {
   constructor() {
@@ -40,7 +40,7 @@ export function saveVersion(plugin, data) {
         version = Version.create(data);
         plugin.versions.push(version);
 
-        savePlugin(plugin)(done);
+        updatePlugin(plugin)(done);
       } catch (err) {
         done(err);
       }

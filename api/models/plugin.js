@@ -36,3 +36,9 @@ export function savePlugin(data) {
     .then(plugin => done(null, plugin))
     .catch(done);
 }
+
+export function updatePlugin(plugin) {
+  return done => plugin.save()
+    .then(plugin => done(null, plugin))
+    .catch(done);
+}

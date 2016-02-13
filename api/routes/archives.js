@@ -1,6 +1,8 @@
 'use strict';
 
-import { S3 } from 'aws-sdk';
+import { retrieveFromS3, updateWithArchive, uploadToS3 } from '../models/archive';
+import { loadPlugin } from '../models/plugin';
+import { loadVersion } from '../models/version';
 
 export function *get() {
   try {
@@ -13,31 +15,17 @@ export function *get() {
   }
 }
 
-export function *upload() {
+export function *upload(name, number) {
   try {
-    const response = yield uploadToS3(this.req);
+    const plugin = yield loadPlugin(name);
+    const version = yield loadVersion(plugin, number);
+
+    const { Location } = yield uploadToS3(this.req);
+
+    yield updateWithArchive(plugin, version, Location);
     this.status = 204;
   } catch (err) {
     console.error(err);
     this.throw(500, err);
   }
-}
-
-function retrieveFromS3(fn) {
-  return function (done) {
-    const s3obj = new S3({ profile: 'kpmpkgs', params: { Bucket: 'kpmpkgs' } });
-    const stream = s3obj.getObject({ Key: 'marvel/marvel-1.0.0.tgz' })
-      .on('httpDone', res => done(null, res.httpResponse))
-      .createReadStream();
-    fn(stream);
-  };
-}
-
-function uploadToS3(stream) {
-  return function (done) {
-    const s3obj = new S3({ profile: 'kpmpkgs', params: { Bucket: 'kpmpkgs' } });
-    s3obj.upload({ Body: stream, Key: 'marvel/marvel-1.0.0.tgz' })
-      .on('httpUploadProgress', evt => console.log('progress:', evt))
-      .send(done);
-  };
 }
