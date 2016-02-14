@@ -1,19 +1,8 @@
 'use strict';
 
-import { retrieveFromS3, updateWithArchive, uploadToS3 } from '../models/archive';
+import { updateWithArchive, uploadToS3 } from '../models/archive';
 import { loadPlugin } from '../models/plugin';
 import { loadVersion } from '../models/version';
-
-export function *get() {
-  try {
-    this.attachment('marvel-1.0.0.tgz');
-    const response = yield retrieveFromS3(stream => this.body = stream);
-    this.status = response.statusCode;
-  } catch (err) {
-    console.error(err);
-    this.throw(500, err);
-  }
-}
 
 export function *upload(name, number) {
   try {

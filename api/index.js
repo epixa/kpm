@@ -30,7 +30,6 @@ app.use(get('/plugins/:name/versions', versions.list));
 app.use(get('/plugins/:name/:version', versions.get));
 app.use(put('/plugins/:name/:version', versions.create));
 
-app.use(get('/plugins/:name/:version/archive', archives.get));
 app.use(put('/plugins/:name/:version/archive', archives.upload));
 
 

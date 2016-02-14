@@ -4,16 +4,6 @@ import { S3 } from 'aws-sdk';
 import { conflict } from 'boom';
 import { updatePlugin } from './plugin';
 
-export function retrieveFromS3(fn) {
-  return function (done) {
-    const s3obj = new S3({ profile: 'kpmpkgs', params: { Bucket: 'kpmpkgs' } });
-    const stream = s3obj.getObject({ Key: 'marvel/marvel-1.0.0.tgz' })
-      .on('httpDone', res => done(null, res.httpResponse))
-      .createReadStream();
-    fn(stream);
-  };
-}
-
 export function uploadToS3(stream) {
   return function (done) {
     const s3obj = new S3({ profile: 'kpmpkgs', params: { Bucket: 'kpmpkgs' } });
