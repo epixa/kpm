@@ -22,15 +22,15 @@ app.use(database('nedb://memory'));
 
 
 // Routes
-app.use(get('/plugins', plugins.list));
-app.use(get('/plugins/:name', plugins.get));
-app.use(put('/plugins/:name', plugins.upsert));
+app.use(get('/api/plugins', plugins.list));
+app.use(get('/api/plugins/:name', plugins.get));
+app.use(put('/api/plugins/:name', plugins.upsert));
 
-app.use(get('/plugins/:name/versions', versions.list));
-app.use(get('/plugins/:name/:version', versions.get));
-app.use(put('/plugins/:name/:version', versions.create));
+app.use(get('/api/plugins/:name/versions', versions.list));
+app.use(get('/api/plugins/:name/:version', versions.get));
+app.use(put('/api/plugins/:name/:version', versions.create));
 
-app.use(put('/plugins/:name/:version/archive', archives.upload));
+app.use(put('/api/plugins/:name/:version/archive', archives.upload));
 
 
 // Compress
