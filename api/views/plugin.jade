@@ -1,0 +1,7 @@
+extends layouts/main
+
+block content
+  h1=plugin.name
+  h3=plugin.versions[plugin.versions.length - 1].number
+  p
+    a(href='#{plugin.versions[plugin.versions.length - 1].archive}')=plugin.versions[plugin.versions.length - 1].archive

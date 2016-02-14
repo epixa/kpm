@@ -1,0 +1,8 @@
+extends layouts/main
+
+block content
+  h1 Plugins
+  ul
+    each plugin in plugins
+      li
+        a(href='/plugin/#{plugin.name}') #{plugin.name} (#{plugin.versions[plugin.versions.length - 1].number})

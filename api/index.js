@@ -1,6 +1,7 @@
 'use strict';
 
 import koa from 'koa';
+import Jade from 'koa-jade';
 import logger from 'koa-logger';
 import compress from 'koa-compress';
 import { get, put } from 'koa-route';
@@ -10,6 +11,7 @@ import database from './database';
 import * as plugins from './routes/plugins';
 import * as versions from './routes/versions';
 import * as archives from './routes/archives';
+import * as website from './routes/website';
 
 const app = koa();
 
@@ -21,7 +23,21 @@ app.use(logger());
 app.use(database('nedb://memory'));
 
 
+// Templates
+new Jade({
+  viewPath: './views',
+  debug: true,
+  pretty: true,
+  compileDebug: true,
+  basedir: './views',
+  app
+});
+
+
 // Routes
+app.use(get('/', website.home));
+app.use(get('/plugin/:name', website.plugin));
+
 app.use(get('/api/plugins', plugins.list));
 app.use(get('/api/plugins/:name', plugins.get));
 app.use(put('/api/plugins/:name', plugins.upsert));
