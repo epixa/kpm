@@ -4,10 +4,15 @@ import { S3 } from 'aws-sdk';
 import { conflict } from 'boom';
 import { updatePlugin } from './plugin';
 
-export function uploadToS3(stream) {
+const Bucket = 'kpmpkgs';
+const ACL = 'public-read';
+
+export function uploadToS3(plugin, version, stream) {
   return function (done) {
-    const s3obj = new S3({ profile: 'kpmpkgs', params: { Bucket: 'kpmpkgs' } });
-    s3obj.upload({ Body: stream, Key: 'marvel/marvel-1.0.0.tgz' })
+    const { name } = plugin;
+    const { number } = version;
+    const s3obj = new S3({ profile: 'kpmpkgs', params: { Bucket, ACL } });
+    s3obj.upload({ Body: stream, Key: `${name}/${name}-${number}.tgz` })
       .on('httpUploadProgress', evt => console.log('progress:', evt))
       .send(done);
   };
