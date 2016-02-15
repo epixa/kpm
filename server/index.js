@@ -2,11 +2,11 @@
 
 import { join as joinPath } from 'path';
 import express from 'express';
-import logger from 'morgan';
 import compression from 'compression';
 
 import database from './database';
 import setupConfig from './config';
+import setupLogger from './logger';
 import setupViews from './views';
 
 import website from './routes/website';
@@ -24,7 +24,7 @@ setupViews(app, joinPath(__dirname, 'views'));
 
 
 // Logger
-app.use(logger('dev'));
+app.use(setupLogger(app));
 
 
 // Database
