@@ -14,13 +14,15 @@ import api from './routes/api';
 
 const app = express();
 
+const fromRoot = (...args) => joinPath(__dirname, ...args);
+
 
 // Config
-app.locals.config = setupConfig(joinPath(__dirname, 'config'), app.get('env'));
+app.locals.config = setupConfig(fromRoot('config'), app.get('env'));
 
 
 // Templates
-setupViews(app, joinPath(__dirname, 'views'));
+setupViews(app, fromRoot('views'));
 
 
 // Logger
