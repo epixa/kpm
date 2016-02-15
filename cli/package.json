@@ -1,5 +1,5 @@
 {
-  "name": "kpm",
+  "name": "kpm-cli",
   "version": "1.0.0-alpha1",
   "description": "Kibana Plugin Manager",
   "main": "index.js",
