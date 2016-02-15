@@ -7,6 +7,7 @@ import compression from 'compression';
 
 import config from './config';
 import database from './database';
+import views from './views';
 
 import website from './routes/website';
 import api from './routes/api';
@@ -21,10 +22,7 @@ app.use(config(joinPath(__dirname, 'config'), app.get('env')));
 // Templates
 app.set('views', joinPath(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-if (app.get('env') === 'development') {
-  app.locals.pretty = true;
-}
+app.use(views());
 
 
 // Logger
