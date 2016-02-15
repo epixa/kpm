@@ -2,6 +2,7 @@
 
 import { Document } from 'camo';
 import { notFound } from 'boom';
+import { last } from 'lodash';
 
 import { Version } from './version';
 
@@ -12,6 +13,13 @@ export default class Plugin extends Document {
     this.name = { type: String, unique: true };
     this.versions = [];
   }
+}
+
+export function initPlugin(plugin) {
+  return {
+    ...plugin,
+    latestVersion: last(plugin.versions)
+  };
 }
 
 export function loadPlugins() {

@@ -2,6 +2,6 @@ extends layouts/main
 
 block content
   h1=plugin.name
-  h3=plugin.versions[plugin.versions.length - 1].number
+  h3=plugin.latestVersion.number
   p
-    a(href='#{plugin.versions[plugin.versions.length - 1].archive}')=plugin.versions[plugin.versions.length - 1].archive
+    a(href='#{plugin.latestVersion.archive}')=plugin.latestVersion.archive

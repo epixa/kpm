@@ -5,4 +5,4 @@ block content
   ul
     each plugin in plugins
       li
-        a(href='/plugin/#{plugin.name}') #{plugin.name} (#{plugin.versions[plugin.versions.length - 1].number})
+        a(href='/plugin/#{plugin.name}') #{plugin.name} (#{plugin.latestVersion.number})
