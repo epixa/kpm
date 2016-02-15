@@ -7,9 +7,15 @@ block content
     #{plugin.versions.length} releases
 
   h4 How to install:
+  p.
+    From your terminal, inside the directory where you have Kibana installed,
+    type:
   code.
     bin/kibana plugin --install #{plugin.name} --url=#{plugin.latestVersion.archive}
 
   h4 How to uninstall:
+  p.
+    From your terminal, inside the directory where you have Kibana installed,
+    type:
   code.
     bin/kibana plugin --remove #{plugin.name}

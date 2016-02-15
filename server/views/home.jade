@@ -1,8 +1,29 @@
 extends layouts/main
 
 block content
-  h1 Plugins
-  ul
-    each plugin in plugins
-      li
-        a(href='/plugin/#{plugin.name}') #{plugin.name} (#{plugin.latestVersion.number})
+  header
+    h1 kpm
+    h2 Kibana Plugin Manager
+
+  section.plugins
+    ul
+      each plugin in plugins
+        li
+          a(href="/plugin/#{plugin.name}").
+            #{plugin.name} (#{plugin.latestVersion.number})
+
+  aside.howto
+    h1 Installing kpm
+    p.
+      The kpm command-line tool requires #[a(target="_blank", href="https://nodejs.org/") Node.js]
+      and #[a(target="_blank", href="https://www.npmjs.com/") npm], which are
+      bundled by default with Kibana.
+    p.
+      From your terminal, inside the directory where you have Kibana installed,
+      type:
+
+    code node/bin/npm install -g kpm-cli
+
+    p.
+      Note: If you have `npm` globally installed on your server, will need to
+      use that instead of the one bundled with Kibana.
