@@ -35,5 +35,5 @@ export async function saveVersion(plugin, data) {
   version = Version.create(data);
   plugin.versions.push(version);
 
-  return updatePlugin(plugin);
+  return updatePlugin(plugin).then(() => loadVersion(plugin, number));
 }

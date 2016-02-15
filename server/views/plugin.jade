@@ -2,6 +2,14 @@ extends layouts/main
 
 block content
   h1=plugin.name
-  h3=plugin.latestVersion.number
-  p
-    a(href='#{plugin.latestVersion.archive}')=plugin.latestVersion.archive
+  h3.
+    #{plugin.latestVersion.number} is the latest of
+    #{plugin.versions.length} releases
+
+  h4 How to install:
+  code.
+    bin/kibana plugin --install #{plugin.name} --url=#{plugin.latestVersion.archive}
+
+  h4 How to uninstall:
+  code.
+    bin/kibana plugin --remove #{plugin.name}
