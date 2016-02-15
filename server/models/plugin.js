@@ -2,7 +2,7 @@
 
 import { Document } from 'camo';
 import { notFound } from 'boom';
-import { last } from 'lodash';
+import { last, sortBy } from 'lodash';
 import { compare as compareVersions } from 'semver';
 
 import { Version } from './version';
@@ -24,7 +24,7 @@ export function initPlugin(plugin) {
 }
 
 export function loadPlugins() {
-  return Plugin.loadMany();
+  return Plugin.loadMany().then(plugins => sortBy(plugins, 'name'));
 }
 
 export async function loadPlugin(name) {
