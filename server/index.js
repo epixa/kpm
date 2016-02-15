@@ -5,8 +5,8 @@ import express from 'express';
 import logger from 'morgan';
 import compression from 'compression';
 
-import config from './config';
 import database from './database';
+import setupConfig from './config';
 import views from './views';
 
 import website from './routes/website';
@@ -16,7 +16,7 @@ const app = express();
 
 
 // Config
-app.use(config(joinPath(__dirname, 'config'), app.get('env')));
+app.locals.config = setupConfig(joinPath(__dirname, 'config'), app.get('env'));
 
 
 // Templates
