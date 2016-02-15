@@ -13,7 +13,8 @@ export default function database(uri) {
     try {
       if (!req.app.locals.db) {
         if (req.app.get('env') === 'development') {
-          await dev();
+          const { storageUrl } = req.app.locals.config;
+          await dev(storageUrl);
         }
         req.app.locals.db = await db;
       }
@@ -25,7 +26,7 @@ export default function database(uri) {
 };
 
 // seed dev data
-async function dev() {
+async function dev(storageUrl) {
   return Promise.all(['marvel', 'sense', 'shield', 'timelion'].map(async name => {
     const plugin = await savePlugin({ name });
     const versions = [
@@ -33,7 +34,7 @@ async function dev() {
       await saveVersion(plugin, { number: '1.2.1' })
     ];
     return Promise.all(versions.map(async version => {
-      const url = `https://www.example/${name}/${name}-${version.number}.tgz`;
+      const url = `${storageUrl}/${name}/${name}-${version.number}.tgz`;
       await updateWithArchive(plugin, version, url);
     }));
   }));
