@@ -3,6 +3,7 @@
 import { Document } from 'camo';
 import { notFound } from 'boom';
 import { last } from 'lodash';
+import { compare as compareVersions } from 'semver';
 
 import { Version } from './version';
 
@@ -38,5 +39,6 @@ export function savePlugin(data) {
 }
 
 export function updatePlugin(plugin) {
+  plugin.versions.sort((v1, v2) => compareVersions(v1.number, v2.number));
   return plugin.save();
 }

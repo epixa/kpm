@@ -30,8 +30,8 @@ async function dev(storageUrl) {
   return Promise.all(['marvel', 'sense', 'shield', 'timelion'].map(async name => {
     const plugin = await savePlugin({ name });
     const versions = [
-      await saveVersion(plugin, { number: '1.0.0' }),
-      await saveVersion(plugin, { number: '1.2.1' })
+      await saveVersion(plugin, { number: '1.2.1' }),
+      await saveVersion(plugin, { number: '1.0.0' })
     ];
     return Promise.all(versions.map(async version => {
       const url = `${storageUrl}/${name}/${name}-${version.number}.tgz`;
