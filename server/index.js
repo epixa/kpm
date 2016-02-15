@@ -5,12 +5,17 @@ import express from 'express';
 import logger from 'morgan';
 import compression from 'compression';
 
+import config from './config';
 import database from './database';
 
 import website from './routes/website';
 import api from './routes/api';
 
 const app = express();
+
+
+// Config
+app.use(config(joinPath(__dirname, 'config'), app.get('env')));
 
 
 // Templates
