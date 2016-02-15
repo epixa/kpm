@@ -7,7 +7,7 @@ import compression from 'compression';
 
 import database from './database';
 import setupConfig from './config';
-import views from './views';
+import setupViews from './views';
 
 import website from './routes/website';
 import api from './routes/api';
@@ -20,9 +20,7 @@ app.locals.config = setupConfig(joinPath(__dirname, 'config'), app.get('env'));
 
 
 // Templates
-app.set('views', joinPath(__dirname, 'views'));
-app.set('view engine', 'jade');
-app.use(views());
+setupViews(app, joinPath(__dirname, 'views'));
 
 
 // Logger

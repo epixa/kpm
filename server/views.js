@@ -1,8 +1,7 @@
 'use strict';
 
-export default function views() {
-  return function (req, res, next) {
-    res.locals.pretty = req.app.locals.config.prettyTemplates;
-    next();
-  }
+export default function views(app, path) {
+  app.set('views', path);
+  app.set('view engine', 'jade');
+  app.locals.pretty = app.locals.config.prettyTemplates;
 };
