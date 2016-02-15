@@ -6,17 +6,21 @@ import { savePlugin } from './models/plugin';
 import { saveVersion } from './models/version';
 import { updateWithArchive } from './models/archive';
 
-export default function database(uri) {
-  const db = connect(uri);
+export default function setupDatabase(app) {
+  const uri = app.locals.config.databaseUri;
+  const db = connect(uri).catch(err => {
+    console.error(err);
+    throw err;
+  });
 
   return async function (req, res, next) {
     try {
       if (!req.app.locals.db) {
+        req.app.locals.db = await db;
         if (req.app.get('env') === 'development') {
           const { storageUrl } = req.app.locals.config;
           await dev(storageUrl);
         }
-        req.app.locals.db = await db;
       }
       next();
     } catch (err) {

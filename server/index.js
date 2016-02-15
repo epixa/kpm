@@ -4,8 +4,8 @@ import { join as joinPath } from 'path';
 import express from 'express';
 import compression from 'compression';
 
-import database from './database';
 import setupConfig from './config';
+import setupDatabase from './database';
 import setupLogger from './logger';
 import setupViews from './views';
 
@@ -28,7 +28,7 @@ app.use(setupLogger(app));
 
 
 // Database
-app.use(database('nedb://memory'));
+app.use(setupDatabase(app));
 
 
 // Routes
