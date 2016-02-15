@@ -1,61 +1,74 @@
 'use strict';
 
-import koa from 'koa';
-import Jade from 'koa-jade';
-import logger from 'koa-logger';
-import compress from 'koa-compress';
-import { get, put } from 'koa-route';
+import { join as joinPath } from 'path';
+import express from 'express';
+import logger from 'morgan';
+import compression from 'compression';
 
 import database from './database';
 
-import * as plugins from './routes/plugins';
-import * as versions from './routes/versions';
-import * as archives from './routes/archives';
-import * as website from './routes/website';
+import website from './routes/website';
+import api from './routes/api';
 
-const app = koa();
+const app = express();
+
+
+// Templates
+app.set('views', joinPath(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+if (app.get('env') === 'development') {
+  app.locals.pretty = true;
+}
+
 
 // Logger
-app.use(logger());
+app.use(logger('dev'));
 
 
 // Database
 app.use(database('nedb://memory'));
 
 
-// Templates
-new Jade({
-  viewPath: './views',
-  debug: true,
-  pretty: true,
-  compileDebug: true,
-  basedir: './views',
-  app
-});
-
-
 // Routes
-app.use(get('/', website.home));
-app.use(get('/plugin/:name', website.plugin));
-
-app.use(get('/api/plugins', plugins.list));
-app.use(get('/api/plugins/:name', plugins.get));
-app.use(put('/api/plugins/:name', plugins.upsert));
-
-app.use(get('/api/plugins/:name/versions', versions.list));
-app.use(get('/api/plugins/:name/:version', versions.get));
-app.use(put('/api/plugins/:name/:version', versions.create));
-
-app.use(put('/api/plugins/:name/:version/archive', archives.upload));
+app.use('/', website);
+app.use('/api', api);
 
 
 // Compress
-app.use(compress());
+app.use(compression());
 
 
-if (!module.parent) {
-  app.listen(4000);
-  console.log('listening on port 4000');
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
 }
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
 
 export default app;

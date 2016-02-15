@@ -15,34 +15,25 @@ export default class Version extends EmbeddedDocument {
 }
 
 export function loadVersions(plugin) {
-  return done => done(null, plugin.versions);
+  return Promise.resolve(plugin.versions);
 }
 
-export function loadVersion(plugin, number) {
-  return done => {
-    try {
-      const version = find(plugin.versions, { number });
-      if (!version) throw notFound(`No version number ${number}`);
-      done(null, version);
-    } catch (err) {
-      done(err);
-    }
-  };
+export async function loadVersion(plugin, number) {
+  const versions = await loadVersions(plugin);
+  const version = find(versions, { number });
+  if (!version) throw notFound(`No version number ${number}`);
+  return version;
 }
 
-export function saveVersion(plugin, data) {
+export async function saveVersion(plugin, data) {
   const { number } = data;
-  return done => {
-      try {
-        let version = find(plugin.versions, { number });
-        if (version) throw conflict(`Version ${number} already exists`);
 
-        version = Version.create(data);
-        plugin.versions.push(version);
+  const versions = await loadVersions(plugin);
+  let version = find(versions, { number });
+  if (version) throw conflict(`Version ${number} already exists`);
 
-        updatePlugin(plugin)(done);
-      } catch (err) {
-        done(err);
-      }
-    }
+  version = Version.create(data);
+  plugin.versions.push(version);
+
+  return updatePlugin(plugin);
 }
