@@ -10,7 +10,8 @@ export async function upload(req, res) {
   const plugin = await loadPlugin(name);
   const version = await loadVersion(plugin, number);
 
-  const { Location } = await uploadToS3(plugin, version, req);
+  const s3Config = req.app.locals.config.s3;
+  const { Location } = await uploadToS3(s3Config, plugin, version, req);
 
   await updateWithArchive(plugin, version, Location);
 
