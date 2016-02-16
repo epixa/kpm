@@ -23,6 +23,7 @@ app.locals.config = setupConfig(fromRoot('config'), app.get('env'));
 
 // Templates
 setupViews(app, fromRoot('views'));
+app.use(express.static(fromRoot('views', 'assets')));
 
 
 // Logger
