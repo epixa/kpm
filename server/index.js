@@ -53,24 +53,30 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+if (app.get('env') === 'xdevelopment') {
+  app.use(function(error, req, res, next) {
+    let status = error.status;
+    let message = error.message;
+    if (error.isBoom) {
+      status = error.output.statusCode;
+      message = error.output.payload.message || error.output.payload.error;
+    }
+    res.status(status || 500);
+    res.render('error', { message, error });
   });
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+app.use(function(error, req, res, next) {
+  let status = error.status;
+  let message = error.message;
+  if (error.isBoom) {
+    status = error.output.statusCode;
+    message = error.output.payload.message || error.output.payload.error;
+  }
+  res.status(status || 500);
+  res.render('error', { message, error: {} });
 });
 
 
