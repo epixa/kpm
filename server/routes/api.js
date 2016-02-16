@@ -1,12 +1,23 @@
 'use strict';
 
 import { Router } from 'express';
-import * as plugins from './api/plugins';
-import * as versions from './api/versions';
+import { json } from 'body-parser';
+import authorization from '../auth';
 import * as archives from './api/archives';
+import * as plugins from './api/plugins';
+import * as users from './api/users';
+import * as versions from './api/versions';
 
 const router = Router();
 
+router.route('/users/:username')
+  .put(users.create);
+
+router.route('/users/:username/token')
+  .post(json(), users.token);
+
+// Require authorization
+router.use(authorization());
 
 router.route('/plugins')
   .get(plugins.list);

@@ -28,6 +28,7 @@ export async function create(req, res, next) {
   try {
     const { name, number } = req.params;
     const plugin = await loadPlugin(name);
+    // todo: assert that current user is the owner of this plugin
     res.send(await saveVersion(plugin, { number }));
   } catch (err) {
     next(err);

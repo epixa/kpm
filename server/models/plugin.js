@@ -5,14 +5,19 @@ import { notFound } from 'boom';
 import { last, sortBy } from 'lodash';
 import { compare as compareVersions } from 'semver';
 
-import { Version } from './version';
+import User from './user';
+import Version from './version';
+
+const required = true;
+const unique = true;
 
 export default class Plugin extends Document {
   constructor() {
     super();
 
-    this.name = { type: String, unique: true };
-    this.versions = [];
+    this.name = { required, type: String, unique };
+    //this.owner = { required, type: User };
+    this.versions = [ Version ];
   }
 }
 
@@ -39,6 +44,7 @@ export function savePlugin(data) {
 }
 
 export function updatePlugin(plugin) {
+  // todo: make sure owner isn't being modified
   plugin.versions.sort((v1, v2) => compareVersions(v1.number, v2.number));
   return plugin.save();
 }

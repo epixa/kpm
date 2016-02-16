@@ -21,8 +21,9 @@ export async function get(req, res, next) {
 
 export async function upsert(req, res, next) {
   try {
+    const owner = req.user;
     const { name } = req.params;
-    res.send(await savePlugin({ name }));
+    res.send(await savePlugin({ name, owner }));
   } catch (err) {
     next(err);
   }

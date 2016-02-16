@@ -1,29 +1,33 @@
 'use strict';
 
-// todo: fix this so it doesn't write a new line every time
-
 const fs = require('fs');
+const EOL = require('os').EOL;
 const curry = require('lodash').curry;
 const cbPromiseHandler = require('./util').cbPromiseHandler;
 
 function store(path, credentials) {
-  const auth = encodedAuthString(credentials.username, credentials.password);
-  return new Promise((resolve, reject) => {
-    fs.writeFile(path, authLine(auth), cbPromiseHandler);
-  });
+  const auth = encodedAuthString(credentials.username, credentials.token);
+
+  let kpmrc;
+  try {
+    const contents = fs.readFileSync(path);
+    kpmrc = contents ? JSON.parse(contents) : {};
+  } catch (err) {
+    kpmrc = {};
+  }
+
+  kpmrc.auth = auth;
+
+  return fs.writeFileSync(path, JSON.stringify(kpmrc, null, 2) + EOL);
 }
 
-function authLine(auth) {
-  return `auth:${auth}\n`;
-}
-
-function encodedAuthString(username, password) {
-  const auth = authString(credentials.username, credentials.password);
+function encodedAuthString(username, token) {
+  const auth = authString(username, token);
   return new Buffer(auth, 'utf8').toString('base64')
 }
 
-function authString(username, password) {
-  return `${username}:${password}`;
+function authString(username, token) {
+  return `${username}:${token}`;
 }
 
 module.exports = {

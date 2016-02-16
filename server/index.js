@@ -54,7 +54,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'xdevelopment') {
+if (app.get('env') === 'development') {
   app.use(function(error, req, res, next) {
     let status = error.status;
     let message = error.message;
@@ -62,8 +62,11 @@ if (app.get('env') === 'xdevelopment') {
       status = error.output.statusCode;
       message = error.output.payload.message || error.output.payload.error;
     }
-    res.status(status || 500);
+    status = status || 500;
+    res.status(status);
     res.render('error', { message, error });
+    console.error(status, message);
+    console.error(error.stack);
   });
 }
 

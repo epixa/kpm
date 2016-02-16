@@ -9,10 +9,12 @@ export async function upload(req, res, next) {
     const { name, number } = req.params;
 
     const plugin = await loadPlugin(name);
+    // todo: assert that current user is the owner of this plugin
     const version = await loadVersion(plugin, number);
 
     const s3Config = req.app.locals.config.s3;
-    const { Location } = await uploadToS3(s3Config, plugin, version, req);
+    //const { Location } = await uploadToS3(s3Config, plugin, version, req);
+    const Location = 'https://example.com/wat.tgz';
 
     await updateWithArchive(plugin, version, Location);
 

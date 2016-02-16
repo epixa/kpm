@@ -1,5 +1,6 @@
 'use strict';
 
+const login = require('./commands/login');
 const publish = require('./commands/publish');
 const addUser = require('./commands/add-user');
 
@@ -10,9 +11,10 @@ if (!command) {
   throw new Error('You must specify a command');
 }
 
-// todo: load credentials if they exist
-
 switch (command) {
+  case 'login':
+    login().catch(handleError);
+    break;
   case 'publish':
     publish.apply(null, args).catch(handleError);
     break;
