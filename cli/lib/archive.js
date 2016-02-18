@@ -23,11 +23,30 @@ function upload(path, version) {
   });
 }
 
+function uploadBuffer(buffer, version) {
+  const archiveUrl = url(version.url);
+  return new Promise((resolve, reject) => {
+    const params = {
+      url: archiveUrl,
+      body: buffer
+    };
+    // todo: pass application/zip ?
+    put(params, cbPromiseHandler(resolve, reject));
+  })
+  .then(response => {
+    if (response.statusCode !== 204) {
+      throw new Error(`Unexpected status: ${response.statusCode}`);
+    }
+    return { url: archiveUrl };
+  });
+}
+
 function url(versionUrl) {
   return `${versionUrl}/archive`;
 }
 
 module.exports = {
   upload: curry(upload),
+  uploadBuffer: curry(uploadBuffer),
   url
 };
