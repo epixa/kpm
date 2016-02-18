@@ -1,7 +1,6 @@
 'use strict';
 
 const publish = require('./commands/publish');
-const publishTar = require('./commands/publish-tar');
 const addUser = require('./commands/add-user');
 
 const args = process.argv.slice(2);
@@ -16,9 +15,6 @@ if (!command) {
 switch (command) {
   case 'publish':
     publish.apply(null, args).catch(handleError);
-    break;
-  case 'publish-tar':
-    publishTar.apply(null, args).catch(handleError);
     break;
   case 'add-user':
     addUser.apply(null, args).catch(handleError);
