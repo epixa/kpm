@@ -17,11 +17,12 @@ module.exports = function publish(path) {
   // todo: is this a valid kibana plugin?
 
   const cwd = tmp.dirSync({ unsafeCleanup: true }).name;
+  const npmPath = resolvePath(__dirname, '..', 'node_modules', '.bin', 'npm');
 
-  child_process.execSync(`${__dirname}/../node_modules/.bin/npm install --production ${path}`, { cwd });
+  child_process.execSync(`${npmPath} install --production ${path}`, { cwd });
 
-  const source = `${cwd}/node_modules/${pkg.name}`;
-  const destination = `${cwd}/${pkg.name}-${pkg.version}.tgz`;
+  const source = resolvePath(cwd, 'node_modules', pkg.name);
+  const destination = resolvePath(cwd, `${pkg.name}-${pkg.version}.tgz`);
 
   return targz().compress(source, destination)
     .then(() => upsertPlugin(pkg.name))
