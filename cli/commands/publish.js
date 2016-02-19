@@ -1,5 +1,7 @@
 'use strict';
 
+const os = require('os');
+const child_process = require('child_process');
 const glob = require('glob');
 const JSZip = require('jszip');
 const joinPath = require('path').join;
@@ -16,7 +18,12 @@ module.exports = function publish(path) {
 
   const pkg = manifest(path);
   // todo: is this a valid kibana plugin?
-  const files = packageFiles(path);
+
+  child_process.execSync(`${__dirname}/../node_modules/.bin/npm install --production ${path}`, { cwd: os.tmpdir() });
+
+  const files = packageFiles(`${os.tmpdir()}/node_modules/${pkg.name}`);
+
+  // todo: be better, clean up after yourself, use tmp
 
   const zip = new JSZip();
   const folder = zip.folder(pkg.name);
