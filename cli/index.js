@@ -24,5 +24,5 @@ switch (command) {
 }
 
 function handleError(err) {
-  console.error(err);
+  console.error(err.stack);
 }

@@ -16,7 +16,7 @@ export function uploadToS3(s3Config, plugin, version, stream) {
   const s3obj = new S3({ profile, params: { Bucket: bucket, ACL } });
 
   return new Promise((resolve, reject) => {
-    s3obj.upload({ Body: stream, Key: `${name}/${name}-${number}.zip` })
+    s3obj.upload({ Body: stream, Key: `${name}/${name}-${number}.tgz` })
       .on('httpUploadProgress', evt => console.log('progress:', evt))
       .send((err, data) => {
         if (err) reject(err);

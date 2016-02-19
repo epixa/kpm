@@ -1,5 +1,6 @@
 'use strict';
 
+const createReadStream = require('fs').createReadStream;
 const curry = require('lodash').curry;
 const put = require('./api').put;
 const cbPromiseHandler = require('./util').cbPromiseHandler;
@@ -8,15 +9,12 @@ const cbPromiseHandler = require('./util').cbPromiseHandler;
 // must reject if user is not owner
 // must reject if archive already exists
 // must reject if version does not exist
-function uploadBuffer(buffer, version) {
+function uploadFile(path, version) {
   const archiveUrl = url(version.url);
   return new Promise((resolve, reject) => {
-    const params = {
-      url: archiveUrl,
-      body: buffer
-    };
-    // todo: pass application/zip ?
-    put(params, cbPromiseHandler(resolve, reject));
+    const stream = put(archiveUrl, cbPromiseHandler(resolve, reject));
+    createReadStream(path).pipe(stream);
+    // todo: pass application/x-gzip ?
   })
   .then(response => {
     if (response.statusCode !== 204) {
@@ -31,6 +29,6 @@ function url(versionUrl) {
 }
 
 module.exports = {
-  uploadBuffer: curry(uploadBuffer),
+  uploadFile: curry(uploadFile),
   url
 };

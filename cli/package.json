@@ -14,11 +14,11 @@
     "url": "https://github.com/epixa/kpm.git"
   },
   "dependencies": {
-    "glob": "^7.0.0",
-    "jszip": "^2.5.0",
     "lodash": "^4.2.1",
     "npm": "^2.14.20",
     "prompt": "^0.2.14",
-    "request": "^2.69.0"
+    "request": "^2.69.0",
+    "tar.gz": "^1.0.3",
+    "tmp": "0.0.28"
   }
 }
