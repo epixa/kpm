@@ -1,6 +1,6 @@
 'use strict';
 
-import { forbidden, notFound, unauthorized } from 'boom';
+import { badRequest, forbidden, notFound, unauthorized } from 'boom';
 
 import { loadUser, verifyToken } from './models/user';
 
@@ -10,7 +10,12 @@ export default function authorization() {
       const { authorization } = req.headers;
       if (!authorization) throw unauthorized();
 
-      const [ username, token ] = decodeAuthPair(authorization);
+      const [ type, auth ] = authorization.split(' ', 2);
+      if (type.toLowerCase() !== 'custom') {
+        throw badRequest(`Unsupported authorization type: ${type}`);
+      }
+
+      const [ username, token ] = decodeAuthPair(auth);
 
       try {
         const user = await loadUser(username);
