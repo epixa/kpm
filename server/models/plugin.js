@@ -16,7 +16,7 @@ export default class Plugin extends Document {
     super();
 
     this.name = { required, type: String, unique };
-    //this.owner = { required, type: User };
+    this.owner = { required, type: User };
     this.versions = [ Version ];
   }
 }
