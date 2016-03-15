@@ -5,7 +5,7 @@ For all of your precious plugins.
 ## Install
 
 ```sh
-npm install -g kpm-cli
+npm install -g kpm
 ```
 
 ## Usage
